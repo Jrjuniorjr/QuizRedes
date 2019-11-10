@@ -5,20 +5,20 @@
  */
 package quizredes;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Junior
  */
-public class Jogador {
+public class Jogador implements Serializable{
     
     private String nome;
     private int pontuacao;
-    private boolean vez;
 
-    public Jogador(String nome, boolean vez) {
+    public Jogador(String nome) {
         this.pontuacao = 0;
         this.nome = nome;
-        this.vez = vez;
     }
 
     public void acertou(){
@@ -44,13 +44,6 @@ public class Jogador {
         this.pontuacao = pontuacao;
     }
 
-    public boolean isVez() {
-        return vez;
-    }
-
-    public void setVez(boolean vez) {
-        this.vez = vez;
-    }
     
     
     
