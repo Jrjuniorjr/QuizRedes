@@ -15,14 +15,21 @@ public class TCPServer {
     public void serverOn() {
         List<Pergunta> perguntas = new ArrayList<>();
         List<Socket> sockets = new ArrayList<>();
+        List<String> alternativas = new ArrayList<>();
+        alternativas.add("a) qual");
+        alternativas.add("b) qual");
+        Pergunta p = new Pergunta("Qual?", alternativas, 1, 2);
+        perguntas.add(p);
+        
         try {
-            criarServerSocket(5432);
+            criarServerSocket(5555);
             while (true) {
-                Socket socket1 = esperarConexao();
-                sockets.add(socket1);
-                Socket socket2 = esperarConexao();
-                sockets.add(socket2);
+                System.out.println("AGUARDANDO CONEXAO");
+                sockets.add(esperarConexao());
+                System.out.println("CONEXAO ACEITA");
+                
                 Thread t = new Thread(new Jogo(perguntas, sockets));
+                t.start();
                 
                 
             }

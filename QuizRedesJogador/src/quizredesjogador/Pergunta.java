@@ -1,19 +1,21 @@
+package quizredesjogador;
+
+
+import java.io.Serializable;
+import java.util.List;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package quizredes;
-
-import java.io.Serializable;
-import java.util.List;
 
 /**
  *
  * @author Junior
  */
-public class Pergunta implements Serializable{
-
+public class Pergunta  implements Serializable{
+    private static final long serialVersionUID = 1L;
     private String pergunta;
     private List<String> alternativa;
     private int resposta;
@@ -57,5 +59,4 @@ public class Pergunta implements Serializable{
     public void setPontuacao(int pontuacao) {
         this.pontuacao = pontuacao;
     }
-
 }
