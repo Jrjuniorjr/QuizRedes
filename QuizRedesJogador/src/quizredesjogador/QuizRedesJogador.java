@@ -25,32 +25,50 @@ public class QuizRedesJogador {
         // TODO code application logic here
         Socket socket = new Socket("localhost", 5555);
         String mgs;
-        Scanner scnaner = new Scanner(System.in);
-        
+        Scanner scanner = new Scanner(System.in);
+        Protocolo p;
+        Status s;
         ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-        
-        boolean b = in.readBoolean();
-        boolean vez = false;
-        if (b) {
-            System.err.println("Digite o nome: ");
-            mgs = scnaner.next();
-            out.writeUTF(mgs);
-            out.flush();
-            b = in.readBoolean();
-            System.out.println("Jogo Começou!");
-            b = in.readBoolean();
-            if(b){
-                Pergunta p = (Pergunta)in.readObject();
-                System.out.println(p.getPergunta());
-                for(String s: p.getAlternativa()){
-                    System.out.println(s);
-                    
-                }
-                
-            }
+        boolean terminou = false;
+        s = (Status) in.readObject();
+        if (s.getTipoStatus().equals(TipoStatus.Preparativos)) {
 
+            s = (Status) in.readObject();
+            if (s.getTipoStatus().equals(TipoStatus.SolicitandoNome)) {
+                String s1 = scanner.next();
+                out.writeUTF(s1);
+                out.flush();
+
+                s = (Status) in.readObject();
+                if (s.getTipoStatus().equals(TipoStatus.Comecou)) {
+                    while (!terminou) {
+                        Placar placar = (Placar) in.readObject();
+                        for (Jogador j : placar.getJogadores()) {
+
+                            System.out.println(j.getNome() + ": " + j.getPontuacao());
+
+                        }
+                        Pergunta pergunta = (Pergunta) in.readObject();
+                        System.out.println(pergunta.getPergunta());
+                        s = (Status) in.readObject();
+                        if (s.getTipoStatus().equals(TipoStatus.Vez)) {
+                            for (String s2 : pergunta.getAlternativa()) {
+                                System.out.println(s2);
+                            }
+                            int resposta = scanner.nextInt();
+                            Resposta r = new Resposta(resposta);
+                            out.writeObject(r);
+                            out.flush();
+                            
+                        }
+
+                    }
+                }
+
+            }
         }
+
     }
 
 }

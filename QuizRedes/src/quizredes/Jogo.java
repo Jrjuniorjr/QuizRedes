@@ -18,9 +18,7 @@ import java.util.logging.Logger;
  *
  * @author Junior
  */
-public class Jogo implements Runnable {
-
-    private static final int PASSARPERGUNTA = -2;
+public class Jogo {
 
     private List<Pergunta> perguntas;
     private List<Socket> sockets;
@@ -28,6 +26,8 @@ public class Jogo implements Runnable {
     private int pontuacaoJogadorVenceu;
     private List<ObjectOutputStream> out;
     private List<ObjectInputStream> in;
+
+    private static final Integer passarPergunta = -2;
 
     public Jogo(List<Pergunta> perguntas, List<Socket> sockets) throws IOException {
         this.perguntas = perguntas;
@@ -39,106 +39,159 @@ public class Jogo implements Runnable {
         preparativos();
     }
 
-    @Override
-    public void run() {
+    public void run() throws ClassNotFoundException, IOException {
         int vez = 1;
         boolean acertou = false;
         int respostaJogador;
         List<Jogador> vencedores;
         jogo();
         vencedores = acharVencedores();
-
+        anunciarPlacar(vencedores);
+        anunciarPlacar(jogadores);
+        fecharConexao();
+        
     }
 
     public void comecarJogo() throws IOException {
+        Protocolo protocolo = new Protocolo(null, InformacaoControle.Comecou, null, null, null);
+
         for (ObjectOutputStream output : out) {
-            output.writeBoolean(true);
+            output.writeObject(protocolo);
             output.flush();
         }
     }
 
-    public void jogo() {
+    public void anunciarPlacar(List<Jogador> j) throws IOException {
+
+        Placar placar = new Placar(j);
+        Protocolo protocolo = new Protocolo(null, InformacaoControle.Placar,
+                placar, null, null);
+
+        for (ObjectOutputStream output : out) {
+            output.writeObject(protocolo);
+            output.flush();
+        }
+
+    }
+
+    public void anunciarPergunta(Pergunta pergunta) throws IOException {
+        PerguntaDTO perguntaDTO = new PerguntaDTO(pergunta.getPergunta(),
+                pergunta.getAlternativas(), pergunta.getPontuacao());
+        Protocolo protocolo = new Protocolo(null, InformacaoControle.Pergunta,
+                null, perguntaDTO, null);
+        for (ObjectOutputStream output : out) {
+            output.writeObject(protocolo);
+            output.flush();
+        }
+
+    }
+
+    public void jogo() throws ClassNotFoundException {
         int respostaJogador;
         int i;
-        boolean acertou;
-        boolean vez;
         String msgParaJogador;
+        Protocolo protocolo;
         try {
+            solicitarNomes();
             comecarJogo();
-            for (Pergunta p : perguntas) {
+            for (Pergunta pergunta : perguntas) {
                 i = 0;
-                acertou = false;
-                while (i < jogadores.size() || !acertou) {
-                    vez = true;
-                    out.get(i).writeBoolean(vez);
+                anunciarPergunta(pergunta);
+                anunciarPlacar(jogadores);
+                while (i < jogadores.size()) {
+                    protocolo = new Protocolo(null, InformacaoControle.Vez,
+                            null, null, null);
+                    out.get(i).writeObject(protocolo);
                     out.get(i).flush();
-                    out.get(i).writeObject(p);
-                    out.get(i).flush();
-                    respostaJogador = in.get(i).read();
-                    if (p.getResposta() == respostaJogador) {
-                        jogadores.get(i).acertou();
-                        i++;
-                        vez = false;
-                        out.get(i).writeBoolean(vez);
-                        out.get(i).flush();
-                        break;
-                    } else if (respostaJogador == PASSARPERGUNTA) { //PASSOU A PERGUNTA
-                        p.setPontuacao(p.getPontuacao() + 1);
+                    protocolo = (Protocolo) in.get(i).readObject();
+
+                    if (protocolo.getInformacaoControle().equals(InformacaoControle.PassouPergunta)) {
+                        pergunta.setPontuacao(pergunta.getPontuacao() + 1);
+                        anunciarPergunta(pergunta);
+                    } else if (protocolo.getInformacaoControle().equals(InformacaoControle.PerguntaRespondida)) {
+                        if (pergunta.getResposta().equals(protocolo.getResposta())) {
+                            jogadores.get(i).acertou();
+                            protocolo = new Protocolo(null, InformacaoControle.Acertou,
+                                    null, null, null);
+                            out.get(i).writeObject(protocolo);
+                            out.get(i).flush();
+                            protocolo = new Protocolo(null, InformacaoControle.AcabouVez,
+                                    null, null, null);
+                            out.get(i).writeObject(protocolo);
+                            out.get(i).flush();
+                            anunciarPlacar(jogadores);
+                            i++;
+                            break;
+                        } else {
+                            protocolo = new Protocolo(null, InformacaoControle.Errou,
+                                    null, null, null);
+                            out.get(i).writeObject(protocolo);
+                            out.get(i).flush();
+                        }
 
                     }
-                    msgParaJogador = mensagemParaJogador();
-                    out.get(i).writeUTF(msgParaJogador);
-                    out.get(i).flush();
-                    vez = false;
-                    out.get(i).writeBoolean(vez);
+                    protocolo = new Protocolo(null, InformacaoControle.AcabouVez,
+                            null, null, null);
+                    out.get(i).writeObject(protocolo);
                     out.get(i).flush();
                     i++;
                 }
             }
+
         } catch (IOException e) {
             System.out.println(e.getMessage());
-        } finally {
-            fecharConexao();
-
-        }
+        } 
     }
 
-    public void preparativos() throws IOException {
+    public void solicitarNomes() throws IOException, ClassNotFoundException {
 
-        boolean preparativos = true;
         int i = 0;
+        Protocolo protocolo = new Protocolo(null, InformacaoControle.SolicitandoNome,
+                null, null, null);
 
         for (Socket s : sockets) {
 
-            out.add(new ObjectOutputStream(s.getOutputStream()));
-            in.add(new ObjectInputStream(s.getInputStream()));
-            out.get(i).writeBoolean(preparativos);
+            out.get(i).writeObject(protocolo);
             out.get(i).flush();
-            String nomeJogador = in.get(i).readUTF();
-            Jogador j = new Jogador(nomeJogador);
-            System.out.println(nomeJogador);
+            protocolo = (Protocolo) in.get(i).readObject();
+            jogadores.add(new Jogador(protocolo.getNomeJogador()));
             i++;
         }
 
     }
 
-    public String mensagemParaJogador() {
-        String s = " ";
-        for (Jogador j : jogadores) {
-            s += j.getNome() + ": " + j.getPontuacao() + "\n";
+    public void preparativos() throws IOException {
+
+        int i = 0;
+
+        Protocolo protocolo = new Protocolo(null, InformacaoControle.Preparativos,
+                null, null, null);
+
+        for (Socket s : sockets) {
+
+            out.add(new ObjectOutputStream(s.getOutputStream()));
+            in.add(new ObjectInputStream(s.getInputStream()));
+            out.get(i).writeObject(protocolo);
+            out.get(i).flush();
+            i++;
         }
-        return s;
 
     }
 
     public void fecharConexao() {
         try {
             int i = 0;
+            Protocolo protocolo = new Protocolo(null, InformacaoControle.AcabouPartida,
+                    null, null, null);
+
             for (Socket s : sockets) {
+
+                out.get(i).writeObject(protocolo);
+                out.get(i).flush();
                 out.get(i).close();
                 in.get(i).close();
                 s.close();
-
+                i++;
             }
         } catch (IOException ex) {
             Logger.getLogger(Jogo.class.getName()).log(Level.SEVERE, null, ex);

@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TCPServer {
 
@@ -28,9 +30,12 @@ public class TCPServer {
                 sockets.add(esperarConexao());
                 System.out.println("CONEXAO ACEITA");
                 
-                Thread t = new Thread(new Jogo(perguntas, sockets));
-                t.start();
-                
+                Jogo j = new Jogo(perguntas, sockets);
+                try {
+                    j.run();
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(TCPServer.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 
             }
 
