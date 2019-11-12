@@ -3,22 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package quizredes.model;
+package util;
 
+import quizredes.model.*;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author Junior
  */
-public class PerguntaDTO {
-      private String pergunta;
+public class Pergunta implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    private String pergunta;
     private List<String> alternativas;
+    private Integer resposta;
     private Integer pontuacao;
 
-    public PerguntaDTO(String pergunta, List<String> alternativas, Integer pontuacao) {
+    public Pergunta(String pergunta, List<String> alternativas, Integer resposta, Integer pontuacao) {
         this.pergunta = pergunta;
         this.alternativas = alternativas;
+        this.resposta = resposta;
         this.pontuacao = pontuacao;
     }
 
@@ -36,6 +42,14 @@ public class PerguntaDTO {
 
     public void setAlternativas(List<String> alternativas) {
         this.alternativas = alternativas;
+    }
+
+    public Integer getResposta() {
+        return resposta;
+    }
+
+    public void setResposta(Integer resposta) {
+        this.resposta = resposta;
     }
 
     public Integer getPontuacao() {

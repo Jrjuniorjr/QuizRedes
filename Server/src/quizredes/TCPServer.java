@@ -1,12 +1,13 @@
 package quizredes;
 
-import quizredes.model.Pergunta;
+
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import util.*;
 
 public class TCPServer {
 
