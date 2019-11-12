@@ -18,14 +18,6 @@ public class Placar implements Serializable{
     public Placar(List<Jogador> jogadores) {
         this.jogadores = jogadores;
     }
-
-    public List<Jogador> getJogadores() {
-        return jogadores;
-    }
-
-    public void setJogadores(List<Jogador> jogadores) {
-        this.jogadores = jogadores;
-    }
     
     
 }

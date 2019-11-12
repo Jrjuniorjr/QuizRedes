@@ -9,6 +9,9 @@ package quizredesjogador;
  *
  * @author Junior
  */
-public class SolicitacaoNome {
+public enum InformacaoControle {
+    
+    Preparativos, Comecou, AcabouPartida, Ganhou, Perdeu, AcabouVez, Acertou, Errou, PassouPergunta, PerguntaRespondida,
+    SemResposta, SolicitandoNome, Pergunta, Vez, Placar;
     
 }
