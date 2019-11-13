@@ -35,7 +35,7 @@ public class Jogo {
         this.out = new ArrayList<>();
         this.in = new ArrayList<>();
         this.jogadores = new ArrayList<>();
-        preparativos();
+        
     }
 
     public void run() throws ClassNotFoundException, IOException {
@@ -43,6 +43,7 @@ public class Jogo {
         boolean acertou = false;
         int respostaJogador;
         List<Jogador> vencedores;
+        preparativos();
         jogo();
         vencedores = acharVencedores();
         anunciarPlacar(vencedores);
@@ -141,8 +142,10 @@ public class Jogo {
             out.get(i).writeObject(protocolo);
             out.get(i).flush();
             protocolo = (Protocolo) in.get(i).readObject();
-            jogadores.add(new Jogador(protocolo.getNomeJogador()));
-            i++;
+            if (protocolo.getInformacaoControle().equals(InformacaoControle.Nome)) {
+                jogadores.add(new Jogador(protocolo.getNomeJogador()));
+            }
+             i++;
         }
 
     }
