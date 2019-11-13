@@ -5,7 +5,6 @@
  */
 package util;
 
-import quizredes.model.*;
 import java.io.Serializable;
 
 /**

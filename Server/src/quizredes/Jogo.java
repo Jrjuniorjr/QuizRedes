@@ -1,4 +1,4 @@
- /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -28,8 +28,6 @@ public class Jogo {
     private List<ObjectOutputStream> out;
     private List<ObjectInputStream> in;
 
-    private static final Integer passarPergunta = -2;
-
     public Jogo(List<Pergunta> perguntas, List<Socket> sockets) throws IOException {
         this.perguntas = perguntas;
         this.sockets = sockets;
@@ -50,7 +48,7 @@ public class Jogo {
         anunciarPlacar(vencedores);
         anunciarPlacar(jogadores);
         fecharConexao();
-        
+
     }
 
     public void comecarJogo() throws IOException {
@@ -97,51 +95,39 @@ public class Jogo {
             comecarJogo();
             for (Pergunta pergunta : perguntas) {
                 i = 0;
-                anunciarPergunta(pergunta);
-                anunciarPlacar(jogadores);
-                while (i < jogadores.size()) {
+                while (i < 4) {
+                    anunciarPergunta(pergunta);
+                    anunciarPlacar(jogadores);
                     protocolo = new Protocolo(null, InformacaoControle.Vez,
                             null, null, null);
-                    out.get(i).writeObject(protocolo);
-                    out.get(i).flush();
-                    protocolo = (Protocolo) in.get(i).readObject();
+                    out.get(i % 2).writeObject(protocolo);
+                    out.get(i % 2).flush();
+                    protocolo = (Protocolo) in.get(i % 2).readObject();
 
-                    if (protocolo.getInformacaoControle().equals(InformacaoControle.PassouPergunta)) {
-                        pergunta.setPontuacao(pergunta.getPontuacao() + 1);
-                        anunciarPergunta(pergunta);
-                    } else if (protocolo.getInformacaoControle().equals(InformacaoControle.PerguntaRespondida)) {
+                    if (protocolo.getInformacaoControle().equals(InformacaoControle.Resposta)) {
                         if (pergunta.getResposta().equals(protocolo.getResposta())) {
-                            jogadores.get(i).acertou();
+                            jogadores.get(i % 2).acertou();
                             protocolo = new Protocolo(null, InformacaoControle.Acertou,
                                     null, null, null);
-                            out.get(i).writeObject(protocolo);
-                            out.get(i).flush();
-                            protocolo = new Protocolo(null, InformacaoControle.AcabouVez,
-                                    null, null, null);
-                            out.get(i).writeObject(protocolo);
-                            out.get(i).flush();
-                            anunciarPlacar(jogadores);
+                            out.get(i % 2).writeObject(protocolo);
+                            out.get(i % 2).flush();
                             i++;
                             break;
                         } else {
                             protocolo = new Protocolo(null, InformacaoControle.Errou,
                                     null, null, null);
-                            out.get(i).writeObject(protocolo);
-                            out.get(i).flush();
+                            out.get(i % 2).writeObject(protocolo);
+                            out.get(i % 2).flush();
                         }
 
                     }
-                    protocolo = new Protocolo(null, InformacaoControle.AcabouVez,
-                            null, null, null);
-                    out.get(i).writeObject(protocolo);
-                    out.get(i).flush();
                     i++;
                 }
             }
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
-        } 
+        }
     }
 
     public void solicitarNomes() throws IOException, ClassNotFoundException {

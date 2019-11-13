@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package util;
+package quizredes;
 
 import java.io.Serializable;
 import java.util.List;
@@ -27,6 +27,10 @@ public class Pergunta implements Serializable {
         this.pontuacao = pontuacao;
     }
 
+    
+    public void perguntaErrada(){
+        this.pontuacao--;
+    }
     public String getPergunta() {
         return pergunta;
     }
