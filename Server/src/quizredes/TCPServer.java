@@ -19,16 +19,11 @@ public class TCPServer {
     }
 
     public void serverOn() throws FileNotFoundException {
-        List<Pergunta> perguntas = new ArrayList<>();
         List<Socket> sockets = new ArrayList<>();
-        List<String> alternativas = new ArrayList<>();
-        alternativas.add("a) qual");
-        alternativas.add("b) qual");
-        Pergunta p = new Pergunta("Qual?", alternativas, 1, 2);
-        perguntas.add(p);
+    
         // TESTE DE JSON
         Gson gson = new Gson();
-        List<Pergunta> pList = gson.fromJson(new FileReader("C:\\Users\\felix\\Desktop\\QuizRedes-master\\Server\\src\\resources\\config.json"), new TypeToken<List<Pergunta>>(){}.getType());//List<Pergunta>.class);
+        List<Pergunta> pList = gson.fromJson(new FileReader("src\\resources\\config.json"), new TypeToken<List<Pergunta>>(){}.getType());//List<Pergunta>.class);
         try {
             criarServerSocket(5555);
             while (true) {
@@ -36,7 +31,7 @@ public class TCPServer {
                 sockets.add(esperarConexao());
                 System.out.println("CONEXAO ACEITA");
                 
-                Jogo j = new Jogo(perguntas, sockets);
+                Jogo j = new Jogo(pList, sockets);
                 try {
                     j.run();
                 } catch (ClassNotFoundException ex) {

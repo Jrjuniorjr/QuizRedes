@@ -11,7 +11,7 @@ import java.net.Socket;
 
 public class QuizRedes {
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws Exception {
         // TODO code application logic here
         Socket socket = new Socket("localhost", 5555);
         String mgs;
