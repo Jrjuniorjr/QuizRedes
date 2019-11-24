@@ -5,22 +5,12 @@
  */
 package quizredes;
 
-import java.awt.BorderLayout;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Scanner;
 
-/**
- *
- * @author Junior
- */
+
 public class QuizRedes {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         // TODO code application logic here
         Socket socket = new Socket("localhost", 5555);

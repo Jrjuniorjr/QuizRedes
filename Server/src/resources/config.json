@@ -1,0 +1,112 @@
+[ 
+      { 
+         "pergunta":"Qual camada da pilha de protocolos o DNS pertence?",
+         "alternativas":[ 
+               "a)Aplicacao",
+               "b)Transporte",
+               "c)internet",
+               "d)Enlace"
+         ],
+		 "resposta":0,
+		 "pontuacao":3
+      },
+      { 
+         "pergunta":"Quais sao as categorias de servidores DNS?",
+         "alternativas":[ 
+               "a)Raiz, dominio de topo e dominio fixo",
+               "b)Dominio de topo e servidor de folha",
+               "c)Raiz, dominio de topo e autoridade",
+               "d)Raiz"
+         ],
+		 "resposta":2,
+		 "pontuacao":3
+      },
+      { 
+         "pergunta":"Qual das opcoes nao pertence ao servidor dominio de topo?",
+         "alternativas":[ 
+               "a).com",
+               "b).br",
+               "c).net",
+               "d).unicap"
+         ],
+		 "resposta":3,
+		 "pontuacao":3
+      },
+      { 
+         "pergunta":"Quais tipos de resolucao para a resposta DNS?",
+         "alternativas":[ 
+               "a)Iterativa e adaptativda",
+               "b)Recursiva e progressiva",
+               "c)Iterativa e repulsiva",
+               "d)Iterativa e recursiva"
+         ],
+		  "resposta":3,
+		  "pontuacao":3
+      },
+      { 
+         "pergunta":"Qual das seguintes alternativas e um PQDN?",
+         "alternativas":[
+               "a)fhca.atc.edu.",
+               "b)challenger",
+               "c)www.google.com.",
+               "d)facebook.com."
+         ],
+		 "resposta":1,
+		 "pontuacao":3
+      },
+      { 
+         "pergunta":"Quais os componentes da URL?",
+         "alternativas":[ 
+               "a)Protocolo, metodo e porta",
+               "b)Protocolo, dominio e porta",
+               "c)Host-computer, porta e caminho",
+               "d)Metodo, porta e caminho"
+         ],
+		 "resposta":1,
+		 "pontuacao":3
+      },
+      { 
+         "pergunta":"Qual o padrao de conexao o HTTP utiliza para transferencia de arquivos?",
+         "alternativas":[ 
+               "a)FTP",
+               "b)UDP",
+               "c)TCP",
+               "d)STCP"
+         ],
+		 "resposta":2,
+		 "pontuacao":3
+      },
+      { 
+         "pergunta":"Como um documento Web pode ser classificado?",
+         "alternativas":[ 
+               "a)Persistente e nao persistente",
+               "b)Entidade, resposta, solicitacao e geral",
+               "c)Estatico, dinamico e geral",
+               "d)Estatico, dinamico e ativo"
+         ],
+		 "resposta":3,
+		 "pontuacao":3
+      },
+      { 
+         "pergunta":"Qual a porta comumente ocultada nas URLS?", 
+         "alternativas":[ 
+               "a)9090",
+               "b)80",
+               "c)443",
+               "d)8"
+         ],
+		 "resposta":1,
+		 "pontuacao":3
+      },
+      { 
+         "pergunta":"Quais os campos que compoem uma mensagem?",
+         "alternativas":[ 
+               "a)Cabecalho, corpo da mensagem e dominio",
+               "b)Cabecalho, corpo da mensagem e endereco",
+               "c)Corpo da mensagem, dominio e requisicao",
+               "d)Cabecalho, corpo da mensagem e requisicao"
+         ],
+		 "resposta":3,
+		 "pontuacao":3
+      }
+   ]

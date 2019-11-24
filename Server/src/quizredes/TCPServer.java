@@ -1,6 +1,8 @@
 package quizredes;
 
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ public class TCPServer {
     public TCPServer() {
     }
 
-    public void serverOn() {
+    public void serverOn() throws FileNotFoundException {
         List<Pergunta> perguntas = new ArrayList<>();
         List<Socket> sockets = new ArrayList<>();
         List<String> alternativas = new ArrayList<>();
@@ -24,7 +26,9 @@ public class TCPServer {
         alternativas.add("b) qual");
         Pergunta p = new Pergunta("Qual?", alternativas, 1, 2);
         perguntas.add(p);
-        
+        // TESTE DE JSON
+        Gson gson = new Gson();
+        List<Pergunta> pList = gson.fromJson(new FileReader("C:\\Users\\felix\\Desktop\\QuizRedes-master\\Server\\src\\resources\\config.json"), new TypeToken<List<Pergunta>>(){}.getType());//List<Pergunta>.class);
         try {
             criarServerSocket(5555);
             while (true) {
