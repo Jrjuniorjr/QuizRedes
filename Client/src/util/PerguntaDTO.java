@@ -5,14 +5,17 @@
  */
 package util;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author Junior
  */
-public class PerguntaDTO {
-      private String pergunta;
+public class PerguntaDTO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    private String pergunta;
     private List<String> alternativas;
     private Integer pontuacao;
 

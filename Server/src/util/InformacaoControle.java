@@ -12,6 +12,6 @@ package util;
 public enum InformacaoControle {
 
     Preparativos, Comecou, AcabouPartida, Ganhou, Perdeu, Acertou, Errou, PassouPergunta, Resposta,
-    SolicitandoNome, Nome, Pergunta, Vez, Placar;
+    SolicitandoNome, Nome, Pergunta, Vez, Placar, AcabouVez;
 
 }

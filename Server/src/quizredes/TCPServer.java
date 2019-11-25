@@ -31,6 +31,10 @@ public class TCPServer {
                 sockets.add(esperarConexao());
                 System.out.println("CONEXAO ACEITA");
                 
+                System.out.println("AGUARDANDO CONEXAO");
+                sockets.add(esperarConexao());
+                System.out.println("CONEXAO ACEITA");
+                
                 Jogo j = new Jogo(pList, sockets);
                 try {
                     j.run();
@@ -50,7 +54,8 @@ public class TCPServer {
     }
 
     private Socket esperarConexao() throws IOException {
-        return this.serverSocket.accept();
+        Socket s = this.serverSocket.accept();
+        return s;
     }
 
 }

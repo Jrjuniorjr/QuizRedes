@@ -30,7 +30,7 @@ public class Jogo {
         this.out = new ArrayList<>();
         this.in = new ArrayList<>();
         this.jogadores = new ArrayList<>();
-        
+
     }
 
     public void run() throws ClassNotFoundException, IOException {
@@ -57,11 +57,10 @@ public class Jogo {
     }
 
     public void anunciarPlacar(List<Jogador> j) throws IOException {
-
         Placar placar = new Placar(j);
         Protocolo protocolo = new Protocolo(null, InformacaoControle.Placar,
                 placar, null, null);
-
+        System.out.println();
         for (ObjectOutputStream output : out) {
             output.writeObject(protocolo);
             output.flush();
@@ -83,17 +82,18 @@ public class Jogo {
 
     public void jogo() throws ClassNotFoundException {
         int respostaJogador;
-        int i;
+        int i = 0;
+        int j;
         String msgParaJogador;
         Protocolo protocolo;
         try {
             solicitarNomes();
             comecarJogo();
             for (Pergunta pergunta : perguntas) {
-                i = 0;
-                while (i < 4) {
-                    anunciarPergunta(pergunta);
+                j = 0;
+                while (j < 2) {
                     anunciarPlacar(jogadores);
+                    anunciarPergunta(pergunta);
                     protocolo = new Protocolo(null, InformacaoControle.Vez,
                             null, null, null);
                     out.get(i % 2).writeObject(protocolo);
@@ -103,8 +103,12 @@ public class Jogo {
                     if (protocolo.getInformacaoControle().equals(InformacaoControle.Resposta)) {
                         if (pergunta.getResposta().equals(protocolo.getResposta())) {
                             jogadores.get(i % 2).acertou();
+
                             protocolo = new Protocolo(null, InformacaoControle.Acertou,
                                     null, null, null);
+                            out.get(i % 2).writeObject(protocolo);
+                            out.get(i % 2).flush();
+                            protocolo = new Protocolo(null, InformacaoControle.AcabouVez, null, null, null);
                             out.get(i % 2).writeObject(protocolo);
                             out.get(i % 2).flush();
                             i++;
@@ -117,7 +121,11 @@ public class Jogo {
                         }
 
                     }
+                    protocolo = new Protocolo(null, InformacaoControle.AcabouVez, null, null, null);
+                            out.get(i % 2).writeObject(protocolo);
+                            out.get(i % 2).flush();
                     i++;
+                    j++;
                 }
             }
 
@@ -129,18 +137,17 @@ public class Jogo {
     public void solicitarNomes() throws IOException, ClassNotFoundException {
 
         int i = 0;
-        Protocolo protocolo = new Protocolo(null, InformacaoControle.SolicitandoNome,
-                null, null, null);
 
         for (Socket s : sockets) {
-
+            Protocolo protocolo = new Protocolo(null, InformacaoControle.SolicitandoNome,
+                    null, null, null);
             out.get(i).writeObject(protocolo);
             out.get(i).flush();
             protocolo = (Protocolo) in.get(i).readObject();
             if (protocolo.getInformacaoControle().equals(InformacaoControle.Nome)) {
                 jogadores.add(new Jogador(protocolo.getNomeJogador()));
             }
-             i++;
+            i++;
         }
 
     }

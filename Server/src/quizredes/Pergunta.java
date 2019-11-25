@@ -4,9 +4,8 @@ package quizredes;
 import java.io.Serializable;
 import java.util.List;
 
-public class Pergunta implements Serializable {
+public class Pergunta{
 
-    private static final long serialVersionUID = 1L;
     private String pergunta;
     private List<String> alternativas;
     private Integer resposta;

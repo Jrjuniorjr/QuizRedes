@@ -5,8 +5,8 @@
  */
 package quizredes;
 
-import java.io.IOException;
-import java.net.Socket;
+        import java.io.IOException;
+        import java.net.Socket;
 
 
 public class QuizRedes {
@@ -17,7 +17,7 @@ public class QuizRedes {
         String mgs;
         TCPClient tcpClient = new TCPClient(socket);
         tcpClient.run();
-        
+
     }
 
 }

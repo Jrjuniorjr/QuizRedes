@@ -12,6 +12,8 @@ import java.io.Serializable;
  * @author Junior
  */
 public class Protocolo implements Serializable{
+    
+    private static final long serialVersionUID = 1L;
     private String nomeJogador;
     private InformacaoControle informacaoControle;
     private Placar placar;
