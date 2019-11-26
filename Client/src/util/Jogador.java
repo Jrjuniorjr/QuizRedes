@@ -13,9 +13,9 @@ import java.io.Serializable;
  */
 public class Jogador implements Serializable{
     
-    private static final long serialVersionUID = 1L;
+    private static long serialVersionUID = 1L;
     private String nome;
-    private int pontuacao;
+    private Integer pontuacao;
 
     public Jogador(String nome) {
         this.pontuacao = 0;
@@ -37,11 +37,11 @@ public class Jogador implements Serializable{
         this.nome = nome;
     }
 
-    public int getPontuacao() {
+    public Integer getPontuacao() {
         return pontuacao;
     }
 
-    public void setPontuacao(int pontuacao) {
+    public void setPontuacao(Integer pontuacao) {
         this.pontuacao = pontuacao;
     }
    

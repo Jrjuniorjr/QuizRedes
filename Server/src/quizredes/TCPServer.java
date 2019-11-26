@@ -30,10 +30,10 @@ public class TCPServer {
                 System.out.println("AGUARDANDO CONEXAO");
                 sockets.add(esperarConexao());
                 System.out.println("CONEXAO ACEITA");
-                
                 System.out.println("AGUARDANDO CONEXAO");
                 sockets.add(esperarConexao());
                 System.out.println("CONEXAO ACEITA");
+                
                 
                 Jogo j = new Jogo(pList, sockets);
                 try {
